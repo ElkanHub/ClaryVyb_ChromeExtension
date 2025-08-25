@@ -30,7 +30,36 @@ const circle = document.getElementById("floatingCircle");
 const popup = document.getElementById("popup");
 const minimizeBtn = document.getElementById("minimizeButton");
 
+let isDragging = false;
+let hasDragged = false;
+let offsetX, offsetY;
+
+circle.addEventListener("mousedown", (e) => {
+  isDragging = true;
+  hasDragged = false;
+  offsetX = e.clientX - widgetContainer.getBoundingClientRect().left;
+  offsetY = e.clientY - widgetContainer.getBoundingClientRect().top;
+});
+
+document.addEventListener("mousemove", (e) => {
+  if (isDragging) {
+    hasDragged = true;
+    widgetContainer.style.left = `${e.clientX - offsetX}px`;
+    widgetContainer.style.top = `${e.clientY - offsetY}px`;
+    widgetContainer.style.right = "auto";
+    widgetContainer.style.bottom = "auto";
+    widgetContainer.style.position = "fixed";
+  }
+});
+
+document.addEventListener("mouseup", () => {
+  isDragging = false;
+});
+
 circle.addEventListener("click", () => {
+  if (hasDragged) {
+    return;
+  }
   popup.classList.remove("hidden");
   circle.style.display = "none";
 });
@@ -38,31 +67,5 @@ circle.addEventListener("click", () => {
 minimizeBtn.addEventListener("click", () => {
   popup.classList.add("hidden");
   circle.style.display = "flex";
-});
-
-
-
-//--------------
-let isDragging = false;
-let offsetX, offsetY;
-
-circle.addEventListener("mousedown", (e) => {
-  isDragging = true;
-  offsetX = e.clientX - circle.getBoundingClientRect().left;
-  offsetY = e.clientY - circle.getBoundingClientRect().top;
-});
-
-document.addEventListener("mousemove", (e) => {
-  if (isDragging) {
-    circle.style.left = `${e.clientX - offsetX}px`;
-    circle.style.top = `${e.clientY - offsetY}px`;
-    circle.style.right = "auto"; // reset fixed right
-    circle.style.bottom = "auto"; // reset fixed bottom
-    circle.style.position = "fixed";
-  }
-});
-
-document.addEventListener("mouseup", () => {
-  isDragging = false;
 });
 
