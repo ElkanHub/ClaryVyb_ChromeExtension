@@ -1,0 +1,6 @@
+TODO:
+- [DONE] Build the initial structure of the extension from SPEC.md.
+- [TODO] Add icons to the /icons directory.
+- [TODO] Implement widget injection in content.js.
+- [TODO] Implement widget logic in widget.js (expand/collapse, drag, API calls).
+- [TODO] Add comments to the code.

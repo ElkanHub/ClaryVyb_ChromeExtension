@@ -1,0 +1,17 @@
+{
+  "manifest_version": 3,
+  "name": "ClaryVyb",
+  "version": "1.0",
+  "description": "Clarify and simplify prompts for AI platforms.",
+  "permissions": ["scripting", "activeTab", "storage"],
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"],
+      "css": ["widget.css"]
+    }
+  ],
+  "icons": {
+    "48": "icons/icon48.png"
+  }
+}
