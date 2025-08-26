@@ -40,18 +40,28 @@ chrome.storage.local.get("widgetPosition", (data) => {
 const circle = document.getElementById("floatingCircle");
 const popup = document.getElementById("popup");
 const minimizeBtn = document.getElementById("minimizeButton");
+const header = document.querySelector('#popup .header');
 
 let isDragging = false;
 let hasDragged = false;
 let offsetX, offsetY;
 
-circle.addEventListener("mousedown", (e) => {
-  e.preventDefault();
+function startDrag(e) {
   isDragging = true;
   hasDragged = false;
-  circle.style.cursor = "grabbing";
   offsetX = e.clientX - widgetContainer.getBoundingClientRect().left;
   offsetY = e.clientY - widgetContainer.getBoundingClientRect().top;
+  widgetContainer.style.cursor = "grabbing";
+}
+
+circle.addEventListener("mousedown", (e) => {
+    e.preventDefault();
+    startDrag(e);
+});
+
+header.addEventListener("mousedown", (e) => {
+    e.preventDefault();
+    startDrag(e);
 });
 
 document.addEventListener("mousemove", (e) => {
@@ -68,7 +78,7 @@ document.addEventListener("mousemove", (e) => {
 document.addEventListener("mouseup", () => {
   if (isDragging) {
     isDragging = false;
-    circle.style.cursor = "grab";
+    widgetContainer.style.cursor = "default";
     const widgetRect = widgetContainer.getBoundingClientRect();
     chrome.storage.local.set({
       widgetPosition: { left: widgetRect.left, top: widgetRect.top },
