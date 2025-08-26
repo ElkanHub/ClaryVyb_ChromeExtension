@@ -20,6 +20,7 @@ widgetContainer.innerHTML = `
       <button id="copyButton">Copy</button>
     </div>
     <div id="outputContainer"></div>
+    <div id="resizeHandle"></div>
   </div>
 `;
 
@@ -122,6 +123,47 @@ circle.addEventListener("click", () => {
   // Apply the new position
   widgetContainer.style.left = `${newLeft}px`;
   widgetContainer.style.top = `${newTop}px`;
+});
+
+const resizeHandle = document.getElementById('resizeHandle');
+let isResizing = false;
+
+// Load widget size from storage
+chrome.storage.local.get("widgetSize", (data) => {
+  if (data.widgetSize) {
+    popup.style.width = `${data.widgetSize.width}px`;
+    popup.style.height = `${data.widgetSize.height}px`;
+  }
+});
+
+resizeHandle.addEventListener('mousedown', (e) => {
+    e.preventDefault();
+    isResizing = true;
+    const startX = e.clientX;
+    const startY = e.clientY;
+    const startWidth = popup.offsetWidth;
+    const startHeight = popup.offsetHeight;
+
+    const doResize = (e) => {
+        if (isResizing) {
+            const newWidth = startWidth + (e.clientX - startX);
+            const newHeight = startHeight + (e.clientY - startY);
+            popup.style.width = `${newWidth}px`;
+            popup.style.height = `${newHeight}px`;
+        }
+    };
+
+    const stopResize = () => {
+        isResizing = false;
+        document.removeEventListener('mousemove', doResize);
+        document.removeEventListener('mouseup', stopResize);
+        chrome.storage.local.set({
+            widgetSize: { width: popup.offsetWidth, height: popup.offsetHeight },
+        });
+    };
+
+    document.addEventListener('mousemove', doResize);
+    document.addEventListener('mouseup', stopResize);
 });
 
 minimizeBtn.addEventListener("click", () => {
