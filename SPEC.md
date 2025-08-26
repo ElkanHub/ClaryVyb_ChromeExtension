@@ -1,205 +1,107 @@
-## ClaryVyb Chrome Extension – Spec & Build Instructions
-## Overview
+## ClaryVyb Chrome Extension – Technical Specification
 
-ClaryVyb is a Chrome extension that helps users write better prompts by clarifying and making them more concise.
-Instead of relying on a traditional popup, the extension injects a glassmorphic draggable widget into the user’s current page.
-The widget can expand/collapse, show API progress states, and stay non-intrusive while the user works.
+---
 
-## Core Features (MVP)
+### **Document Version:** 1.0
+### **Last Updated:** 2025-08-26
 
-Glassmorphic Widget (Expandable/Collapsible)
+---
 
-Collapsed state:
+## 1. Overview
 
-Small draggable floating circle (bottom-right by default).
+ClaryVyb is a Chrome extension designed to help users refine and improve their writing prompts for AI platforms. It provides a non-intrusive, on-page widget that allows for quick prompt clarification and simplification without disrupting the user's workflow.
 
-Circle contains the logo/initial.
+The core of the extension is a draggable, glassmorphic widget that can be expanded for prompt input or collapsed into a small, floating circle to save space.
 
-Expanded state (Glass Panel):
+---
 
-Textarea for input.
+## 2. Core Functionality
 
-Buttons:
+### 2.1. Draggable Widget
 
-Clarify
+The widget is the central UI component of the extension. It can be moved freely around the screen and its position is saved locally, so it remembers where you last placed it.
 
-Concise
+#### 2.1.1. Collapsed State (Floating Circle)
 
-Copy
+*   **Appearance:** A 60x60px circular button with a semi-transparent, blurred background (glassmorphism).
+*   **Behavior:**
+    *   Displays the extension's logo or an initial.
+    *   Can be dragged and dropped anywhere on the screen.
+    *   A single click expands the widget into the full panel.
 
-Output box for rewritten prompt.
+#### 2.1.2. Expanded State (Glass Panel)
 
-Minimize button to collapse back to circle.
+*   **Appearance:** A rectangular panel with a glassmorphic background.
+*   **Components:**
+    *   **Header:** Contains the extension logo and a minimize button.
+    *   **Prompt Input:** A textarea for users to enter their text.
+    *   **Action Buttons:**
+        *   `Clarify`: (API call placeholder) To make the prompt more detailed.
+        *   `Concise`: (API call placeholder) To make the prompt shorter.
+        *   `Copy`: To copy the output to the clipboard.
+    *   **Output Container:** A read-only area to display the refined prompt.
+*   **Behavior:**
+    *   Clicking the minimize button collapses the panel back into the floating circle.
+    *   The panel's position is constrained to the viewport, ensuring it's always accessible.
 
-Status Indicators on Floating Circle
+### 2.2. Status Indicators
 
-While API call is running:
+*This functionality is planned for future API integration.*
 
-Show spinning progress animation inside the circle.
+*   **In Progress:** When an API call is active, the floating circle will display a spinning progress animation and a yellow status badge.
+*   **Completed:** When the API call is finished, the spinner will stop, and the badge will turn green, indicating the output is ready.
 
-Show yellow badge at the bottom-right corner of circle.
+---
 
-When API response is ready:
+## 3. Technical Implementation
 
-Badge turns green.
+### 3.1. File Structure
 
-Spinner stops.
-
-Clicking the circle expands the panel again with the updated output.
-
-Draggable Widget
-
-Users can click and drag the circle or expanded panel anywhere on screen.
-
-Widget remembers last position (saved via chrome.storage.local).
-
-Non-Intrusive Behavior
-
-Widget overlays current page without breaking site layout.
-
-Transparent background with glassmorphism style.
-
-Clicking outside expanded widget collapses it back into the circle.
-
-Extension does not auto-close after Copy.
-
-File Structure
+```
 claryvyb-extension/
-│── manifest.json
-│── content.js         # Injects widget into page
-│── widget.html        # Markup for widget
-│── widget.js          # Logic for widget expand/collapse + API
-│── widget.css         # Glassmorphism styles
-│── background.js      # Optional: API handling, Pro features
-│── icons/
-│   ├── icon16.png
-│   ├── icon48.png
-│   └── icon128.png
+├── manifest.json
+├── content.js
+├── widget.js
+├── widget.css
+└── icons/
+    ├── icon16.png
+    ├── icon48.png
+    └── icon128.png
+```
 
-Manifest.json (Manifest V3)
-{
-  "manifest_version": 3,
-  "name": "ClaryVyb",
-  "version": "1.0",
-  "description": "Clarify and simplify prompts for AI platforms.",
-  "permissions": ["storage", "activeTab", "scripting"],
-  "background": {
-    "service_worker": "background.js"
-  },
-  "content_scripts": [
-    {
-      "matches": ["<all_urls>"],
-      "js": ["content.js"]
-    }
-  ],
-  "icons": {
-    "16": "icons/icon16.png",
-    "48": "icons/icon48.png",
-    "128": "icons/icon128.png"
-  }
-}
+### 3.2. Manifest (`manifest.json`)
 
-Widget.html (Glassmorphism Layout)
+*   **Version:** Manifest V3
+*   **Permissions:** `storage`, `activeTab`, `scripting`
+*   **Content Scripts:**
+    *   `content.js`: Injects the widget into web pages.
+    *   `widget.js`: Handles all widget logic (dragging, expand/collapse).
+    *   `widget.css`: Provides the styling for the widget.
 
-Glass-style overlay injected into page.
+### 3.3. Widget Injection (`content.js`)
 
-Collapsed Circle (Default):
+*   Responsible for creating the widget's HTML structure and injecting it into the DOM of the current page.
+*   Loads the widget's last saved position from `chrome.storage.local`.
 
-div#claryvyb-circle (logo, draggable, progress spinner, badge).
+### 3.4. Widget Logic (`widget.js`)
 
-Expanded Panel:
+*   Handles all user interactions with the widget.
+*   Implements the drag-and-drop functionality.
+*   Manages the expand and collapse behavior between the floating circle and the main panel.
+*   Contains the logic for keeping the widget within the viewport.
 
-div#claryvyb-panel (glass card).
+### 3.5. Styling (`widget.css`)
 
-Components:
+*   Defines the visual appearance of the widget, including the glassmorphism effect, layout, and animations.
+*   Uses `backdrop-filter: blur()` to create the blurred glass effect.
 
-Header: logo + minimize button.
+---
 
-Textarea for user input.
+## 4. Future Enhancements
 
-Buttons: Clarify, Concise, Copy.
+This section outlines potential features to be added in future versions.
 
-Output container for result.
-
-Widget.css (Glassmorphism Style)
-
-Key styling principles:
-
-Transparency + blur (backdrop-filter).
-
-Soft rounded corners.
-
-Shadow for floating effect.
-
-Circle: 60x60px, draggable, fixed position bottom-right.
-
-Example:
-
-.glass {
-  background: rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(12px);
-  border-radius: 16px;
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  padding: 16px;
-  width: 300px;
-}
-#claryvyb-circle {
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  background: rgba(255, 255, 255, 0.25);
-  backdrop-filter: blur(10px);
-  cursor: grab;
-  z-index: 999999;
-}
-
-Widget.js (Core Logic)
-
-Handle expand/collapse (circle ↔ panel).
-
-Handle dragging logic (mousedown → mousemove → mouseup).
-
-API Call Flow:
-
-User clicks Clarify/Concise → minimize into circle.
-
-Circle shows spinner + yellow badge.
-
-API returns → badge turns green, spinner stops.
-
-Clicking circle expands panel with output.
-
-API Integration
-
-Option A (Rules-based JavaScript cleanup).
-Option B (OpenAI API → Pro upgrade).
-
-Interaction Flow
-
-User installs extension → widget loads automatically on every page.
-
-User sees floating circle (idle state).
-
-Expands panel → types prompt → clicks Clarify/Concise.
-
-Panel collapses → spinner + yellow badge shows progress.
-
-When ready → badge turns green → user clicks circle → sees output.
-
-User copies → panel stays open.
-
-Clicking outside panel → collapses back to circle.
-
-Future Enhancements (Post-MVP)
-
-Inline Grammarly-style textbox injection.
-
-Templates & prompt history.
-
-Dark mode toggle.
-
-Pro upgrade (via Gumroad/Payhip).
+*   **API Integration:** Connect the `Clarify` and `Concise` buttons to a language model API to provide prompt suggestions.
+*   **Inline Text Highlighting:** Allow users to select text on a page and get suggestions directly.
+*   **Prompt History:** Save a history of user prompts and suggestions.
+*   **Customizable Themes:** Allow users to choose different themes or create their own.
