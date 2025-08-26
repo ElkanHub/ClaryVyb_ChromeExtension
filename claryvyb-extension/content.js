@@ -10,7 +10,8 @@ let uiState = {
   widgetX: 20,
   widgetY: 20,
   widgetWidth: 320,
-  widgetHeight: 220
+  widgetHeight: 220,
+  view: 'circle' // can be 'circle' or 'popup'
 };
 
 function saveUiState() {
@@ -21,23 +22,28 @@ function restoreUiState(callback) {
   chrome.storage.local.get("uiState", (data) => {
     if (data.uiState) {
       uiState = data.uiState;
-      applyUiState();
     }
+    applyUiState();
     if (callback) callback();
   });
 }
 
 function applyUiState() {
-  if (circle) {
-    circle.style.left = `${uiState.circleX}px`;
-    circle.style.top = `${uiState.circleY}px`;
-  }
-  if (popup) {
-    popup.style.left = `${uiState.widgetX}px`;
-    popup.style.top = `${uiState.widgetY}px`;
-    popup.style.width = `${uiState.widgetWidth}px`;
-    popup.style.height = `${uiState.widgetHeight}px`;
-  }
+    if (uiState.view === 'circle') {
+        widgetContainer.classList.add('claryvyb-circle-view');
+        widgetContainer.classList.remove('claryvyb-popup-view');
+        widgetContainer.style.left = `${uiState.circleX}px`;
+        widgetContainer.style.top = `${uiState.circleY}px`;
+        widgetContainer.style.width = '60px';
+        widgetContainer.style.height = '60px';
+    } else {
+        widgetContainer.classList.add('claryvyb-popup-view');
+        widgetContainer.classList.remove('claryvyb-circle-view');
+        widgetContainer.style.left = `${uiState.widgetX}px`;
+        widgetContainer.style.top = `${uiState.widgetY}px`;
+        widgetContainer.style.width = `${uiState.widgetWidth}px`;
+        widgetContainer.style.height = `${uiState.widgetHeight}px`;
+    }
 }
 
 // =====================================================================================
@@ -52,7 +58,7 @@ widgetContainer.innerHTML = `
     <div class="progress-spinner"></div>
     <div class="badge"></div>
   </div>
-  <div id="popup" class="glass hidden">
+  <div id="popup" class="glass">
     <div class="header">
       <img src="${chrome.runtime.getURL("icons/icon48.png")}" alt="ClaryVyb" />
       <button id="minimizeButton">-</button>
@@ -118,7 +124,7 @@ document.addEventListener("mouseup", () => {
   if (isDragging) {
     isDragging = false;
     widgetContainer.style.cursor = "default";
-    if (popup.classList.contains('hidden')) {
+    if (uiState.view === 'circle') {
         uiState.circleX = parseInt(widgetContainer.style.left);
         uiState.circleY = parseInt(widgetContainer.style.top);
     } else {
@@ -148,27 +154,19 @@ circle.addEventListener("click", () => {
   if (hasDragged) {
     return;
   }
-  popup.classList.remove("hidden");
-  circle.style.display = "none";
-  widgetContainer.style.left = `${uiState.widgetX}px`;
-  widgetContainer.style.top = `${uiState.widgetY}px`;
-  widgetContainer.style.width = `${uiState.widgetWidth}px`;
-  widgetContainer.style.height = `${uiState.widgetHeight}px`;
+  uiState.view = 'popup';
+  applyUiState();
+  saveUiState();
 });
 
 minimizeBtn.addEventListener("click", () => {
-  popup.classList.add("hidden");
-  circle.style.display = "flex";
-  widgetContainer.style.left = `${uiState.circleX}px`;
-  widgetContainer.style.top = `${uiState.circleY}px`;
-  widgetContainer.style.width = 'auto';
-  widgetContainer.style.height = 'auto';
+  uiState.view = 'circle';
+  applyUiState();
+  saveUiState();
 });
 
 // =====================================================================================
 // SECTION: INITIALIZATION
 // =====================================================================================
 
-document.addEventListener("DOMContentLoaded", () => {
-  restoreUiState();
-});
+restoreUiState();
