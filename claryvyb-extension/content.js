@@ -11,7 +11,7 @@ let uiState = {
   widgetY: 20,
   widgetWidth: 320,
   widgetHeight: 220,
-  view: 'circle' // can be 'circle' or 'popup'
+  view: "circle", // can be 'circle' or 'popup'
 };
 
 function saveUiState() {
@@ -29,21 +29,21 @@ function restoreUiState(callback) {
 }
 
 function applyUiState() {
-    if (uiState.view === 'circle') {
-        widgetContainer.classList.add('claryvyb-circle-view');
-        widgetContainer.classList.remove('claryvyb-popup-view');
-        widgetContainer.style.left = `${uiState.circleX}px`;
-        widgetContainer.style.top = `${uiState.circleY}px`;
-        widgetContainer.style.width = '60px';
-        widgetContainer.style.height = '60px';
-    } else {
-        widgetContainer.classList.add('claryvyb-popup-view');
-        widgetContainer.classList.remove('claryvyb-circle-view');
-        widgetContainer.style.left = `${uiState.widgetX}px`;
-        widgetContainer.style.top = `${uiState.widgetY}px`;
-        widgetContainer.style.width = `${uiState.widgetWidth}px`;
-        widgetContainer.style.height = `${uiState.widgetHeight}px`;
-    }
+  if (uiState.view === "circle") {
+    widgetContainer.classList.add("claryvyb-circle-view");
+    widgetContainer.classList.remove("claryvyb-popup-view");
+    widgetContainer.style.left = `${uiState.circleX}px`;
+    widgetContainer.style.top = `${uiState.circleY}px`;
+    widgetContainer.style.width = "60px";
+    widgetContainer.style.height = "60px";
+  } else {
+    widgetContainer.classList.add("claryvyb-popup-view");
+    widgetContainer.classList.remove("claryvyb-circle-view");
+    widgetContainer.style.left = `${uiState.widgetX}px`;
+    widgetContainer.style.top = `${uiState.widgetY}px`;
+    widgetContainer.style.width = `${uiState.widgetWidth}px`;
+    widgetContainer.style.height = `${uiState.widgetHeight}px`;
+  }
 }
 
 // =====================================================================================
@@ -60,8 +60,8 @@ widgetContainer.innerHTML = `
   </div>
   <div id="popup" class="glass">
     <div class="header">
-      <img src="${chrome.runtime.getURL("icons/icon48.png")}" alt="ClaryVyb" />
-      <button id="minimizeButton">-</button>
+      <img src="${chrome.runtime.getURL('./icons/icon48.png')}" alt="ClaryVyb" />
+      <button id="minimizeButton">&times;</button>
     </div>
     <textarea id="promptInput" placeholder="Enter your prompt..."></textarea>
     <div class="buttons">
@@ -83,8 +83,8 @@ document.body.appendChild(widgetContainer);
 const circle = document.getElementById("floatingCircle");
 const popup = document.getElementById("popup");
 const minimizeBtn = document.getElementById("minimizeButton");
-const header = document.querySelector('#popup .header');
-const resizeHandle = document.getElementById('resizeHandle');
+const header = document.querySelector("#popup .header");
+const resizeHandle = document.getElementById("resizeHandle");
 
 // =====================================================================================
 // SECTION: DRAG AND DROP LOGIC
@@ -103,13 +103,13 @@ function startDrag(e) {
 }
 
 circle.addEventListener("mousedown", (e) => {
-    e.preventDefault();
-    startDrag(e);
+  e.preventDefault();
+  startDrag(e);
 });
 
 header.addEventListener("mousedown", (e) => {
-    e.preventDefault();
-    startDrag(e);
+  e.preventDefault();
+  startDrag(e);
 });
 
 document.addEventListener("mousemove", (e) => {
@@ -124,12 +124,12 @@ document.addEventListener("mouseup", () => {
   if (isDragging) {
     isDragging = false;
     widgetContainer.style.cursor = "default";
-    if (uiState.view === 'circle') {
-        uiState.circleX = parseInt(widgetContainer.style.left);
-        uiState.circleY = parseInt(widgetContainer.style.top);
+    if (uiState.view === "circle") {
+      uiState.circleX = parseInt(widgetContainer.style.left);
+      uiState.circleY = parseInt(widgetContainer.style.top);
     } else {
-        uiState.widgetX = parseInt(widgetContainer.style.left);
-        uiState.widgetY = parseInt(widgetContainer.style.top);
+      uiState.widgetX = parseInt(widgetContainer.style.left);
+      uiState.widgetY = parseInt(widgetContainer.style.top);
     }
     saveUiState();
   }
@@ -154,13 +154,13 @@ circle.addEventListener("click", () => {
   if (hasDragged) {
     return;
   }
-  uiState.view = 'popup';
+  uiState.view = "popup";
   applyUiState();
   saveUiState();
 });
 
 minimizeBtn.addEventListener("click", () => {
-  uiState.view = 'circle';
+  uiState.view = "circle";
   applyUiState();
   saveUiState();
 });
