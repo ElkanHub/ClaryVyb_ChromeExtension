@@ -25,6 +25,17 @@ widgetContainer.innerHTML = `
 
 document.body.appendChild(widgetContainer);
 
+// Load widget position from storage
+chrome.storage.local.get("widgetPosition", (data) => {
+  if (data.widgetPosition) {
+    widgetContainer.style.left = `${data.widgetPosition.left}px`;
+    widgetContainer.style.top = `${data.widgetPosition.top}px`;
+    widgetContainer.style.right = "auto";
+    widgetContainer.style.bottom = "auto";
+    widgetContainer.style.position = "fixed";
+  }
+});
+
 // Toggle expand/minimize
 const circle = document.getElementById("floatingCircle");
 const popup = document.getElementById("popup");
@@ -35,8 +46,10 @@ let hasDragged = false;
 let offsetX, offsetY;
 
 circle.addEventListener("mousedown", (e) => {
+  e.preventDefault();
   isDragging = true;
   hasDragged = false;
+  circle.style.cursor = "grabbing";
   offsetX = e.clientX - widgetContainer.getBoundingClientRect().left;
   offsetY = e.clientY - widgetContainer.getBoundingClientRect().top;
 });
@@ -53,7 +66,14 @@ document.addEventListener("mousemove", (e) => {
 });
 
 document.addEventListener("mouseup", () => {
-  isDragging = false;
+  if (isDragging) {
+    isDragging = false;
+    circle.style.cursor = "grab";
+    const widgetRect = widgetContainer.getBoundingClientRect();
+    chrome.storage.local.set({
+      widgetPosition: { left: widgetRect.left, top: widgetRect.top },
+    });
+  }
 });
 
 circle.addEventListener("click", () => {
@@ -96,6 +116,16 @@ circle.addEventListener("click", () => {
 
 minimizeBtn.addEventListener("click", () => {
   popup.classList.add("hidden");
-  circle.style.display = "flex";
+    circle.style.display = "flex";
+    //-------------
+    chrome.storage.local.get("widgetPosition", (data) => {
+        if (data.widgetPosition) {
+            widgetContainer.style.left = `${data.widgetPosition.left}px`;
+            widgetContainer.style.top = `${data.widgetPosition.top}px`;
+            widgetContainer.style.right = "auto";
+            widgetContainer.style.bottom = "auto";
+            widgetContainer.style.position = "fixed";
+        }
+    });
 });
 

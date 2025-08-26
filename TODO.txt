@@ -6,3 +6,4 @@ TODO:
 - [TODO] Add comments to the code.
 - [DONE] Fix dragging issues (popup opening on drag, and opening at the old location).
 - [DONE] Ensure the open widget never goes out of the screen.
+- [DONE] Improve dragging experience and remember widget position.
