@@ -1,8 +1,52 @@
-// This script will be responsible for injecting the widget into the page.// Create container
+// This script will be responsible for injecting the widget into the page.
+
+// =====================================================================================
+// SECTION: UI STATE MANAGEMENT
+// =====================================================================================
+
+let uiState = {
+  circleX: 20,
+  circleY: 20,
+  widgetX: 20,
+  widgetY: 20,
+  widgetWidth: 320,
+  widgetHeight: 220
+};
+
+function saveUiState() {
+  chrome.storage.local.set({ uiState });
+}
+
+function restoreUiState(callback) {
+  chrome.storage.local.get("uiState", (data) => {
+    if (data.uiState) {
+      uiState = data.uiState;
+      applyUiState();
+    }
+    if (callback) callback();
+  });
+}
+
+function applyUiState() {
+  if (circle) {
+    circle.style.left = `${uiState.circleX}px`;
+    circle.style.top = `${uiState.circleY}px`;
+  }
+  if (popup) {
+    popup.style.left = `${uiState.widgetX}px`;
+    popup.style.top = `${uiState.widgetY}px`;
+    popup.style.width = `${uiState.widgetWidth}px`;
+    popup.style.height = `${uiState.widgetHeight}px`;
+  }
+}
+
+// =====================================================================================
+// SECTION: WIDGET INJECTION
+// =====================================================================================
+
 const widgetContainer = document.createElement("div");
 widgetContainer.id = "claryvyb-widget";
 
-// Start with just the floating circle
 widgetContainer.innerHTML = `
   <div id="floatingCircle">
     <div class="progress-spinner"></div>
@@ -26,22 +70,19 @@ widgetContainer.innerHTML = `
 
 document.body.appendChild(widgetContainer);
 
-// Load widget position from storage
-chrome.storage.local.get("widgetPosition", (data) => {
-  if (data.widgetPosition) {
-    widgetContainer.style.left = `${data.widgetPosition.left}px`;
-    widgetContainer.style.top = `${data.widgetPosition.top}px`;
-    widgetContainer.style.right = "auto";
-    widgetContainer.style.bottom = "auto";
-    widgetContainer.style.position = "fixed";
-  }
-});
+// =====================================================================================
+// SECTION: UI ELEMENT REFERENCES
+// =====================================================================================
 
-// Toggle expand/minimize
 const circle = document.getElementById("floatingCircle");
 const popup = document.getElementById("popup");
 const minimizeBtn = document.getElementById("minimizeButton");
 const header = document.querySelector('#popup .header');
+const resizeHandle = document.getElementById('resizeHandle');
+
+// =====================================================================================
+// SECTION: DRAG AND DROP LOGIC
+// =====================================================================================
 
 let isDragging = false;
 let hasDragged = false;
@@ -70,9 +111,6 @@ document.addEventListener("mousemove", (e) => {
     hasDragged = true;
     widgetContainer.style.left = `${e.clientX - offsetX}px`;
     widgetContainer.style.top = `${e.clientY - offsetY}px`;
-    widgetContainer.style.right = "auto";
-    widgetContainer.style.bottom = "auto";
-    widgetContainer.style.position = "fixed";
   }
 });
 
@@ -80,104 +118,57 @@ document.addEventListener("mouseup", () => {
   if (isDragging) {
     isDragging = false;
     widgetContainer.style.cursor = "default";
-    const widgetRect = widgetContainer.getBoundingClientRect();
-    chrome.storage.local.set({
-      widgetPosition: { left: widgetRect.left, top: widgetRect.top },
-    });
+    if (popup.classList.contains('hidden')) {
+        uiState.circleX = parseInt(widgetContainer.style.left);
+        uiState.circleY = parseInt(widgetContainer.style.top);
+    } else {
+        uiState.widgetX = parseInt(widgetContainer.style.left);
+        uiState.widgetY = parseInt(widgetContainer.style.top);
+    }
+    saveUiState();
   }
 });
+
+// =====================================================================================
+// SECTION: RESIZE LOGIC
+// =====================================================================================
+
+const resizeObserver = new ResizeObserver(() => {
+  uiState.widgetWidth = popup.offsetWidth;
+  uiState.widgetHeight = popup.offsetHeight;
+  saveUiState();
+});
+resizeObserver.observe(popup);
+
+// =====================================================================================
+// SECTION: WIDGET EXPAND/COLLAPSE LOGIC
+// =====================================================================================
 
 circle.addEventListener("click", () => {
   if (hasDragged) {
     return;
   }
-
-  // Show the popup first to get its dimensions
   popup.classList.remove("hidden");
   circle.style.display = "none";
-
-  const widgetRect = widgetContainer.getBoundingClientRect();
-  const popupRect = popup.getBoundingClientRect();
-  const viewportWidth = window.innerWidth;
-  const viewportHeight = window.innerHeight;
-
-  let newLeft = widgetRect.left;
-  let newTop = widgetRect.top;
-
-  // Adjust horizontal position
-  if (newLeft + popupRect.width > viewportWidth) {
-    newLeft = viewportWidth - popupRect.width;
-  }
-  if (newLeft < 0) {
-    newLeft = 0;
-  }
-
-  // Adjust vertical position
-  if (newTop + popupRect.height > viewportHeight) {
-    newTop = viewportHeight - popupRect.height;
-  }
-  if (newTop < 0) {
-    newTop = 0;
-  }
-
-  // Apply the new position
-  widgetContainer.style.left = `${newLeft}px`;
-  widgetContainer.style.top = `${newTop}px`;
-});
-
-const resizeHandle = document.getElementById('resizeHandle');
-let isResizing = false;
-
-// Load widget size from storage
-chrome.storage.local.get("widgetSize", (data) => {
-  if (data.widgetSize) {
-    popup.style.width = `${data.widgetSize.width}px`;
-    popup.style.height = `${data.widgetSize.height}px`;
-  }
-});
-
-resizeHandle.addEventListener('mousedown', (e) => {
-    e.preventDefault();
-    isResizing = true;
-    const startX = e.clientX;
-    const startY = e.clientY;
-    const startWidth = popup.offsetWidth;
-    const startHeight = popup.offsetHeight;
-
-    const doResize = (e) => {
-        if (isResizing) {
-            const newWidth = startWidth + (e.clientX - startX);
-            const newHeight = startHeight + (e.clientY - startY);
-            popup.style.width = `${newWidth}px`;
-            popup.style.height = `${newHeight}px`;
-        }
-    };
-
-    const stopResize = () => {
-        isResizing = false;
-        document.removeEventListener('mousemove', doResize);
-        document.removeEventListener('mouseup', stopResize);
-        chrome.storage.local.set({
-            widgetSize: { width: popup.offsetWidth, height: popup.offsetHeight },
-        });
-    };
-
-    document.addEventListener('mousemove', doResize);
-    document.addEventListener('mouseup', stopResize);
+  widgetContainer.style.left = `${uiState.widgetX}px`;
+  widgetContainer.style.top = `${uiState.widgetY}px`;
+  widgetContainer.style.width = `${uiState.widgetWidth}px`;
+  widgetContainer.style.height = `${uiState.widgetHeight}px`;
 });
 
 minimizeBtn.addEventListener("click", () => {
   popup.classList.add("hidden");
-    circle.style.display = "flex";
-    //-------------
-    chrome.storage.local.get("widgetPosition", (data) => {
-        if (data.widgetPosition) {
-            widgetContainer.style.left = `${data.widgetPosition.left}px`;
-            widgetContainer.style.top = `${data.widgetPosition.top}px`;
-            widgetContainer.style.right = "auto";
-            widgetContainer.style.bottom = "auto";
-            widgetContainer.style.position = "fixed";
-        }
-    });
+  circle.style.display = "flex";
+  widgetContainer.style.left = `${uiState.circleX}px`;
+  widgetContainer.style.top = `${uiState.circleY}px`;
+  widgetContainer.style.width = 'auto';
+  widgetContainer.style.height = 'auto';
 });
 
+// =====================================================================================
+// SECTION: INITIALIZATION
+// =====================================================================================
+
+document.addEventListener("DOMContentLoaded", () => {
+  restoreUiState();
+});
