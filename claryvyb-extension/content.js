@@ -32,15 +32,17 @@ function applyUiState() {
   if (uiState.view === "circle") {
     widgetContainer.classList.add("claryvyb-circle-view");
     widgetContainer.classList.remove("claryvyb-popup-view");
-    widgetContainer.style.left = `${uiState.circleX}px`;
-    widgetContainer.style.top = `${uiState.circleY}px`;
+    const { x, y } = constrainWidgetPosition(uiState.circleX, uiState.circleY, 60, 60);
+    widgetContainer.style.left = `${x}px`;
+    widgetContainer.style.top = `${y}px`;
     widgetContainer.style.width = "60px";
     widgetContainer.style.height = "60px";
   } else {
     widgetContainer.classList.add("claryvyb-popup-view");
     widgetContainer.classList.remove("claryvyb-circle-view");
-    widgetContainer.style.left = `${uiState.widgetX}px`;
-    widgetContainer.style.top = `${uiState.widgetY}px`;
+    const { x, y } = constrainWidgetPosition(uiState.widgetX, uiState.widgetY, uiState.widgetWidth, uiState.widgetHeight);
+    widgetContainer.style.left = `${x}px`;
+    widgetContainer.style.top = `${y}px`;
     widgetContainer.style.width = `${uiState.widgetWidth}px`;
     widgetContainer.style.height = `${uiState.widgetHeight}px`;
   }
@@ -87,6 +89,24 @@ const header = document.querySelector("#popup .header");
 const resizeHandle = document.getElementById("resizeHandle");
 
 // =====================================================================================
+// SECTION: HELPER FUNCTIONS
+// =====================================================================================
+
+function constrainWidgetPosition(x, y, width, height) {
+    const viewportWidth = window.innerWidth;
+    const viewportHeight = window.innerHeight;
+    let newX = x;
+    let newY = y;
+
+    if (newX < 0) newX = 0;
+    if (newY < 0) newY = 0;
+    if (newX + width > viewportWidth) newX = viewportWidth - width;
+    if (newY + height > viewportHeight) newY = viewportHeight - height;
+
+    return { x: newX, y: newY };
+}
+
+// =====================================================================================
 // SECTION: DRAG AND DROP LOGIC
 // =====================================================================================
 
@@ -115,8 +135,9 @@ header.addEventListener("mousedown", (e) => {
 document.addEventListener("mousemove", (e) => {
   if (isDragging) {
     hasDragged = true;
-    widgetContainer.style.left = `${e.clientX - offsetX}px`;
-    widgetContainer.style.top = `${e.clientY - offsetY}px`;
+    const { x, y } = constrainWidgetPosition(e.clientX - offsetX, e.clientY - offsetY, widgetContainer.offsetWidth, widgetContainer.offsetHeight);
+    widgetContainer.style.left = `${x}px`;
+    widgetContainer.style.top = `${y}px`;
   }
 });
 
@@ -142,7 +163,11 @@ document.addEventListener("mouseup", () => {
 const resizeObserver = new ResizeObserver(() => {
   uiState.widgetWidth = popup.offsetWidth;
   uiState.widgetHeight = popup.offsetHeight;
+  const { x, y } = constrainWidgetPosition(uiState.widgetX, uiState.widgetY, uiState.widgetWidth, uiState.widgetHeight);
+  uiState.widgetX = x;
+  uiState.widgetY = y;
   saveUiState();
+  applyUiState();
 });
 resizeObserver.observe(popup);
 
@@ -163,6 +188,14 @@ minimizeBtn.addEventListener("click", () => {
   uiState.view = "circle";
   applyUiState();
   saveUiState();
+});
+
+// =====================================================================================
+// SECTION: WINDOW RESIZE HANDLING
+// =====================================================================================
+
+window.addEventListener('resize', () => {
+    applyUiState();
 });
 
 // =====================================================================================
