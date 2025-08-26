@@ -1,8 +1,24 @@
+#popup .header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+#popup .header img {
+  width: 24px;
+  height: 24px;
+  margin-right: 8px;
+  object-fit: contain;
+  object-position: center;
+  border-radius: 4px;
+}
 #claryvyb-widget {
   position: fixed;
   bottom: 20px;
   right: 20px;
-  z-index: 999999;
+  z-index: 999999999999999999999;
   font-family: sans-serif;
 }
 
@@ -65,10 +81,15 @@
   flex-grow: 1;
   height: 100%;
 }
+#promptInput {
+  max-width: 360px;
+}
 
 #outputContainer {
   box-shadow: inset 5px 5px 10px rgba(0, 0, 0, 0.1),
     inset -5px -5px 5px rgba(255, 255, 255, 0.3);
+  overflow-y: auto;
+  border-bottom: 2px solid #ccc;
 }
 
 .claryvyb-circle-view #popup {

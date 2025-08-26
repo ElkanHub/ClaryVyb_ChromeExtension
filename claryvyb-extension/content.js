@@ -72,9 +72,7 @@ widgetContainer.innerHTML = `
   </div>
   <div id="popup" class="glass">
     <div class="header">
-      <img src="${chrome.runtime.getURL(
-        "./icons/icon48.png"
-      )}" alt="ClaryVyb" />
+      <img src="${chrome.runtime.getURL("icons/icon48.png")}" alt="ClaryVyb" />
       <button id="minimizeButton">&times;</button>
     </div>
     <textarea id="promptInput" placeholder="Enter your prompt..."></textarea>
@@ -83,7 +81,23 @@ widgetContainer.innerHTML = `
       <button id="conciseButton">Concise</button>
       <button id="copyButton">Copy</button>
     </div>
-    <div id="outputContainer"></div>
+    <div id="outputContainer">
+      <p>
+      Triadic Colors
+Triadic harmonies consist of three colors equidistant from one another on the color wheel. Like complementary colors, triadic schemes tend to be very bright with a high contrast and work best when one color dominates.
+
+Tetradic Colors
+Tetradic color harmonies are formed by two sets of complementary colors 60 degrees apart on the color wheel. Tetradic schemes are an excellent starting point for creating color palettes; fine tune them using color shades, tints and tones.
+
+Square Colors
+Similar to tetradic harmonies, square color schemes consist of four colors, but set equidistant from one another on the color wheel. Likewise square harmonies are great beginnings of a brand or website color palette.
+
+Color Shades, Tints and Tones
+Color shades, tints and tones are created by adding black, white and gray respectively to a chosen color. They can be very useful in web design for backgrounds and typography, and are often paired with a complementary color for contrast.
+
+Color Shades
+      </p>
+    </div>
     <div id="resizeHandle"></div>
   </div>
 `;
@@ -282,8 +296,22 @@ function triggerAiGlow() {
     { once: true }
   );
 }
-
-// Example: check site on load
-if (isAiPlatform(window.location.href)) {
-  triggerAiGlow();
+//3=================
+function checkAiAndGlow() {
+  if (isAiPlatform(window.location.href)) {
+    triggerAiGlow();
+  }
 }
+
+// Run once on load
+checkAiAndGlow();
+
+// Also catch SPA navigation (sites that don’t fully reload)
+let lastUrl = location.href;
+new MutationObserver(() => {
+  const currentUrl = location.href;
+  if (currentUrl !== lastUrl) {
+    lastUrl = currentUrl;
+    checkAiAndGlow();
+  }
+}).observe(document, { subtree: true, childList: true });
