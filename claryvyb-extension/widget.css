@@ -8,13 +8,13 @@
 
 #popup.glass {
   background: rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(12px);
+  backdrop-filter: blur(10px) saturate(180%);
   border-radius: 16px;
-  box-shadow: 0 4px 30px rgba(0,0,0,0.1);
-  border: 1px solid rgba(255,255,255,0.3);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.3);
   padding: 20px;
   width: 300px;
-  min-width: 280px;
+  min-width: 400px;
   max-width: 600px;
   min-height: 180px;
   max-height: 400px;
@@ -31,11 +31,11 @@
 #floatingCircle {
   width: 60px;
   height: 60px;
-  background-color: rgba(255,255,255,0.2);
-  backdrop-filter: blur(8px);
+  background-color: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(5px) saturate(180%);
   border-radius: 50%;
-  border: 1px solid rgba(255,255,255,0.4);
-  box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -43,29 +43,36 @@
 }
 
 #resizeHandle {
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    width: 15px;
-    height: 15px;
-    cursor: se-resize;
-    background-image: linear-gradient(135deg, transparent 0%, transparent 50%, #fff 50%, #fff 100%);
-    opacity: 0.5;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 15px;
+  height: 15px;
+  cursor: se-resize;
+  background-image: linear-gradient(
+    135deg,
+    transparent 0%,
+    transparent 50%,
+    #fff 50%,
+    #fff 100%
+  );
+  opacity: 0.5;
 }
 
-#promptInput, #outputContainer {
-    flex-grow: 1;
-    height: 100%;
+#promptInput,
+#outputContainer {
+  flex-grow: 1;
+  height: 100%;
 }
 
 .claryvyb-circle-view #popup {
-    display: none;
+  display: none;
 }
 
 .claryvyb-popup-view #floatingCircle {
-    display: none;
+  display: none;
 }
 
 .buttons {
-    flex-shrink: 0;
+  flex-shrink: 0;
 }

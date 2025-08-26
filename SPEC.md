@@ -2,7 +2,7 @@
 
 ---
 
-### **Document Version:** 1.0
+### **Document Version:** 1.1
 ### **Last Updated:** 2025-08-26
 
 ---
@@ -11,15 +11,15 @@
 
 ClaryVyb is a Chrome extension designed to help users refine and improve their writing prompts for AI platforms. It provides a non-intrusive, on-page widget that allows for quick prompt clarification and simplification without disrupting the user's workflow.
 
-The core of the extension is a draggable, glassmorphic widget that can be expanded for prompt input or collapsed into a small, floating circle to save space.
+The core of the extension is a draggable and resizable glassmorphic widget that can be expanded for prompt input or collapsed into a small, floating circle to save space.
 
 ---
 
 ## 2. Core Functionality
 
-### 2.1. Draggable Widget
+### 2.1. Draggable & Resizable Widget
 
-The widget is the central UI component of the extension. It can be moved freely around the screen and its position is saved locally, so it remembers where you last placed it.
+The widget is the central UI component of the extension. It can be moved freely around the screen and resized to fit the user's needs. Its position and size are saved locally, so it remembers its state across sessions.
 
 #### 2.1.1. Collapsed State (Floating Circle)
 
@@ -32,6 +32,12 @@ The widget is the central UI component of the extension. It can be moved freely 
 #### 2.1.2. Expanded State (Glass Panel)
 
 *   **Appearance:** A rectangular panel with a glassmorphic background.
+*   **Behavior:**
+    *   The panel is draggable by its header.
+    *   The panel is resizable from the bottom-right corner.
+    *   The panel has a minimum width of 280px and a maximum width of 600px.
+    *   The panel has a minimum height of 180px and a maximum height of 400px.
+    *   Clicking the minimize button collapses the panel back into the floating circle.
 *   **Components:**
     *   **Header:** Contains the extension logo and a minimize button.
     *   **Prompt Input:** A textarea for users to enter their text.
@@ -40,9 +46,6 @@ The widget is the central UI component of the extension. It can be moved freely 
         *   `Concise`: (API call placeholder) To make the prompt shorter.
         *   `Copy`: To copy the output to the clipboard.
     *   **Output Container:** A read-only area to display the refined prompt.
-*   **Behavior:**
-    *   Clicking the minimize button collapses the panel back into the floating circle.
-    *   The panel's position is constrained to the viewport, ensuring it's always accessible.
 
 ### 2.2. Status Indicators
 
@@ -61,7 +64,6 @@ The widget is the central UI component of the extension. It can be moved freely 
 claryvyb-extension/
 ├── manifest.json
 ├── content.js
-├── widget.js
 ├── widget.css
 └── icons/
     ├── icon16.png
@@ -74,26 +76,21 @@ claryvyb-extension/
 *   **Version:** Manifest V3
 *   **Permissions:** `storage`, `activeTab`, `scripting`
 *   **Content Scripts:**
-    *   `content.js`: Injects the widget into web pages.
-    *   `widget.js`: Handles all widget logic (dragging, expand/collapse).
+    *   `content.js`: Injects the widget and handles all its logic.
     *   `widget.css`: Provides the styling for the widget.
 
-### 3.3. Widget Injection (`content.js`)
+### 3.3. Widget Logic (`content.js`)
 
-*   Responsible for creating the widget's HTML structure and injecting it into the DOM of the current page.
-*   Loads the widget's last saved position from `chrome.storage.local`.
+*   **UI State Management:** The widget's state (position, size, and view) is managed by a `uiState` object. This object is saved to `chrome.storage.local` to persist the state across sessions.
+*   **View Switching:** The visibility of the circle and the popup is controlled by adding and removing the `claryvyb-circle-view` and `claryvyb-popup-view` classes to the main widget container.
+*   **Drag and Drop:** The drag and drop functionality is implemented for both the circle and the popup header.
+*   **Resizing:** The resizing functionality is implemented using a resize handle and a `ResizeObserver` to update the `uiState` object.
 
-### 3.4. Widget Logic (`widget.js`)
-
-*   Handles all user interactions with the widget.
-*   Implements the drag-and-drop functionality.
-*   Manages the expand and collapse behavior between the floating circle and the main panel.
-*   Contains the logic for keeping the widget within the viewport.
-
-### 3.5. Styling (`widget.css`)
+### 3.4. Styling (`widget.css`)
 
 *   Defines the visual appearance of the widget, including the glassmorphism effect, layout, and animations.
 *   Uses `backdrop-filter: blur()` to create the blurred glass effect.
+*   Uses the `.claryvyb-circle-view` and `.claryvyb-popup-view` classes to control the visibility of the circle and the popup.
 
 ---
 
