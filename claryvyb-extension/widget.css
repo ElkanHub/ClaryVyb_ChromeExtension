@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@500;700&display=swap");
+
 #popup .header {
   width: 100%;
   display: flex;
@@ -15,7 +17,24 @@
   border-radius: 4px;
 }
 #popup .header .title {
-  font-weight: bold;
+  font-family: "Poppins", sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  background: linear-gradient(
+    120deg,
+    rgba(255, 255, 255, 0.85),
+    rgba(200, 200, 255, 0.9),
+    rgba(150, 200, 255, 0.95)
+  );
+
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+  /* Subtle glassy glow */
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.15), 0 0 12px rgba(180, 220, 255, 0.5);
+  letter-spacing: 1px;
+  user-select: none;
 }
 #popup #minimizeButton {
   position: absolute;
