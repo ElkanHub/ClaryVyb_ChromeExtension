@@ -319,7 +319,13 @@ new MutationObserver(() => {
 
 //4=================glow on keypress
 document.addEventListener("keydown", (e) => {
-  if (e.altKey && e.key === "l") {
+  const key = e.key.toLowerCase();
+
+  if (
+    (e.ctrlKey && e.shiftKey && key === "k") || // Windows/Linux
+    (e.metaKey && e.shiftKey && key === "k") // Mac (Command+Shift+K)
+  ) {
+    e.preventDefault(); // prevent browser conflicts
     triggerAiGlow();
   }
 });
