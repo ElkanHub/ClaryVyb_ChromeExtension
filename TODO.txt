@@ -5,3 +5,4 @@ TODO:
 - [TODO] Implement widget logic in widget.js (expand/collapse, drag, API calls).
 - [TODO] Add comments to the code.
 - [DONE] Fix dragging issues (popup opening on drag, and opening at the old location).
+- [DONE] Ensure the open widget never goes out of the screen.

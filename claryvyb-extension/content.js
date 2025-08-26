@@ -60,8 +60,38 @@ circle.addEventListener("click", () => {
   if (hasDragged) {
     return;
   }
+
+  // Show the popup first to get its dimensions
   popup.classList.remove("hidden");
   circle.style.display = "none";
+
+  const widgetRect = widgetContainer.getBoundingClientRect();
+  const popupRect = popup.getBoundingClientRect();
+  const viewportWidth = window.innerWidth;
+  const viewportHeight = window.innerHeight;
+
+  let newLeft = widgetRect.left;
+  let newTop = widgetRect.top;
+
+  // Adjust horizontal position
+  if (newLeft + popupRect.width > viewportWidth) {
+    newLeft = viewportWidth - popupRect.width;
+  }
+  if (newLeft < 0) {
+    newLeft = 0;
+  }
+
+  // Adjust vertical position
+  if (newTop + popupRect.height > viewportHeight) {
+    newTop = viewportHeight - popupRect.height;
+  }
+  if (newTop < 0) {
+    newTop = 0;
+  }
+
+  // Apply the new position
+  widgetContainer.style.left = `${newLeft}px`;
+  widgetContainer.style.top = `${newTop}px`;
 });
 
 minimizeBtn.addEventListener("click", () => {
