@@ -32,7 +32,12 @@ function applyUiState() {
   if (uiState.view === "circle") {
     widgetContainer.classList.add("claryvyb-circle-view");
     widgetContainer.classList.remove("claryvyb-popup-view");
-    const { x, y } = constrainWidgetPosition(uiState.circleX, uiState.circleY, 60, 60);
+    const { x, y } = constrainWidgetPosition(
+      uiState.circleX,
+      uiState.circleY,
+      60,
+      60
+    );
     widgetContainer.style.left = `${x}px`;
     widgetContainer.style.top = `${y}px`;
     widgetContainer.style.width = "60px";
@@ -40,7 +45,12 @@ function applyUiState() {
   } else {
     widgetContainer.classList.add("claryvyb-popup-view");
     widgetContainer.classList.remove("claryvyb-circle-view");
-    const { x, y } = constrainWidgetPosition(uiState.widgetX, uiState.widgetY, uiState.widgetWidth, uiState.widgetHeight);
+    const { x, y } = constrainWidgetPosition(
+      uiState.widgetX,
+      uiState.widgetY,
+      uiState.widgetWidth,
+      uiState.widgetHeight
+    );
     widgetContainer.style.left = `${x}px`;
     widgetContainer.style.top = `${y}px`;
     widgetContainer.style.width = `${uiState.widgetWidth}px`;
@@ -62,7 +72,9 @@ widgetContainer.innerHTML = `
   </div>
   <div id="popup" class="glass">
     <div class="header">
-      <img src="${chrome.runtime.getURL('./icons/icon48.png')}" alt="ClaryVyb" />
+      <img src="${chrome.runtime.getURL(
+        "./icons/icon48.png"
+      )}" alt="ClaryVyb" />
       <button id="minimizeButton">&times;</button>
     </div>
     <textarea id="promptInput" placeholder="Enter your prompt..."></textarea>
@@ -93,17 +105,17 @@ const resizeHandle = document.getElementById("resizeHandle");
 // =====================================================================================
 
 function constrainWidgetPosition(x, y, width, height) {
-    const viewportWidth = window.innerWidth;
-    const viewportHeight = window.innerHeight;
-    let newX = x;
-    let newY = y;
+  const viewportWidth = window.innerWidth;
+  const viewportHeight = window.innerHeight;
+  let newX = x;
+  let newY = y;
 
-    if (newX < 0) newX = 0;
-    if (newY < 0) newY = 0;
-    if (newX + width > viewportWidth) newX = viewportWidth - width;
-    if (newY + height > viewportHeight) newY = viewportHeight - height;
+  if (newX < 0) newX = 0;
+  if (newY < 0) newY = 0;
+  if (newX + width > viewportWidth) newX = viewportWidth - width;
+  if (newY + height > viewportHeight) newY = viewportHeight - height;
 
-    return { x: newX, y: newY };
+  return { x: newX, y: newY };
 }
 
 // =====================================================================================
@@ -135,7 +147,12 @@ header.addEventListener("mousedown", (e) => {
 document.addEventListener("mousemove", (e) => {
   if (isDragging) {
     hasDragged = true;
-    const { x, y } = constrainWidgetPosition(e.clientX - offsetX, e.clientY - offsetY, widgetContainer.offsetWidth, widgetContainer.offsetHeight);
+    const { x, y } = constrainWidgetPosition(
+      e.clientX - offsetX,
+      e.clientY - offsetY,
+      widgetContainer.offsetWidth,
+      widgetContainer.offsetHeight
+    );
     widgetContainer.style.left = `${x}px`;
     widgetContainer.style.top = `${y}px`;
   }
@@ -163,7 +180,12 @@ document.addEventListener("mouseup", () => {
 const resizeObserver = new ResizeObserver(() => {
   uiState.widgetWidth = popup.offsetWidth;
   uiState.widgetHeight = popup.offsetHeight;
-  const { x, y } = constrainWidgetPosition(uiState.widgetX, uiState.widgetY, uiState.widgetWidth, uiState.widgetHeight);
+  const { x, y } = constrainWidgetPosition(
+    uiState.widgetX,
+    uiState.widgetY,
+    uiState.widgetWidth,
+    uiState.widgetHeight
+  );
   uiState.widgetX = x;
   uiState.widgetY = y;
   saveUiState();
@@ -194,8 +216,8 @@ minimizeBtn.addEventListener("click", () => {
 // SECTION: WINDOW RESIZE HANDLING
 // =====================================================================================
 
-window.addEventListener('resize', () => {
-    applyUiState();
+window.addEventListener("resize", () => {
+  applyUiState();
 });
 
 // =====================================================================================
@@ -203,3 +225,65 @@ window.addEventListener('resize', () => {
 // =====================================================================================
 
 restoreUiState();
+
+//===========================
+const knownAiDomains = [
+  "openai.com",
+  "chat.openai.com",
+  "claude.ai",
+  "perplexity.ai",
+  "character.ai",
+  "stability.ai",
+  "midjourney.com",
+  "huggingface.co",
+  "runwayml.com",
+  "bard.google.com",
+  "gemini.google.com",
+  "bing.com",
+  "lovable.dev",
+  "bolt.new",
+];
+
+function isAiPlatform(url) {
+  try {
+    const parsed = new URL(url);
+
+    // Exact domain match
+    if (knownAiDomains.some((domain) => parsed.hostname.includes(domain))) {
+      return true;
+    }
+    // Contains domain name
+    if (knownAiDomains.some((domain) => parsed.includes(domain))) {
+      return true;
+    }
+
+    // Heuristic: contains .ai or path with "ai"
+    if (parsed.hostname.endsWith(".ai") || parsed.pathname.includes("/ai")) {
+      return true;
+    }
+  } catch (e) {
+    console.error("Invalid URL", e);
+  }
+  return false;
+}
+//2============================
+function triggerAiGlow() {
+  const circle = document.getElementById("floatingCircle");
+  if (!circle) return;
+
+  circle.classList.add("ai-glow");
+
+  // remove after animation ends so it can be triggered again later
+  circle.addEventListener(
+    "animationend",
+    () => {
+      circle.classList.remove("ai-glow");
+    },
+    { once: true }
+  );
+}
+
+// Example: check site on load
+if (isAiPlatform(window.location.href)) {
+  triggerAiGlow();
+}
