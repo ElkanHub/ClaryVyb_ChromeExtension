@@ -1,7 +1,7 @@
 #popup .header {
+  width: 100%;
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
   align-items: center;
   margin-bottom: 10px;
 }
@@ -13,6 +13,20 @@
   object-fit: contain;
   object-position: center;
   border-radius: 4px;
+}
+#popup .header .title {
+  font-weight: bold;
+}
+#popup #minimizeButton {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  cursor: pointer;
+  width: 30px;
+  height: 30px;
+}
+#popup #minimizeButton:hover {
+  color: #e25c5c;
 }
 #claryvyb-widget {
   position: fixed;

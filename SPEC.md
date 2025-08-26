@@ -2,7 +2,7 @@
 
 ---
 
-### **Document Version:** 1.1
+### **Document Version:** 1.2
 ### **Last Updated:** 2025-08-26
 
 ---
@@ -11,7 +11,7 @@
 
 ClaryVyb is a Chrome extension designed to help users refine and improve their writing prompts for AI platforms. It provides a non-intrusive, on-page widget that allows for quick prompt clarification and simplification without disrupting the user's workflow.
 
-The core of the extension is a draggable and resizable glassmorphic widget that can be expanded for prompt input or collapsed into a small, floating circle to save space.
+The core of the extension is a draggable and resizable glassmorphic widget that can be expanded for prompt input or collapsed into a small, floating circle to save space. The widget is constrained to the visible screen area, ensuring it is always accessible.
 
 ---
 
@@ -20,6 +20,8 @@ The core of the extension is a draggable and resizable glassmorphic widget that 
 ### 2.1. Draggable & Resizable Widget
 
 The widget is the central UI component of the extension. It can be moved freely around the screen and resized to fit the user's needs. Its position and size are saved locally, so it remembers its state across sessions.
+
+*   **Screen Boundary Constraints:** The widget is always constrained to the visible screen area. It cannot be dragged or resized off-screen.
 
 #### 2.1.1. Collapsed State (Floating Circle)
 
@@ -85,6 +87,7 @@ claryvyb-extension/
 *   **View Switching:** The visibility of the circle and the popup is controlled by adding and removing the `claryvyb-circle-view` and `claryvyb-popup-view` classes to the main widget container.
 *   **Drag and Drop:** The drag and drop functionality is implemented for both the circle and the popup header.
 *   **Resizing:** The resizing functionality is implemented using a resize handle and a `ResizeObserver` to update the `uiState` object.
+*   **Boundary Constraints:** The `constrainWidgetPosition` helper function ensures that the widget stays within the visible screen area. This function is called during drag, resize, and expand operations. A `resize` event listener on the `window` object also ensures the widget stays within the boundaries when the window is resized.
 
 ### 3.4. Styling (`widget.css`)
 

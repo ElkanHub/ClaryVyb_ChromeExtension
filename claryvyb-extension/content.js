@@ -73,6 +73,7 @@ widgetContainer.innerHTML = `
   <div id="popup" class="glass">
     <div class="header">
       <img src="${chrome.runtime.getURL("icons/icon48.png")}" alt="ClaryVyb" />
+      <span class="title">ClaryVyb</span>
       <button id="minimizeButton">&times;</button>
     </div>
     <textarea id="promptInput" placeholder="Enter your prompt..."></textarea>
@@ -315,3 +316,10 @@ new MutationObserver(() => {
     checkAiAndGlow();
   }
 }).observe(document, { subtree: true, childList: true });
+
+//4=================glow on keypress
+document.addEventListener("keydown", (e) => {
+  if (e.altKey && e.key === "l") {
+    triggerAiGlow();
+  }
+});
