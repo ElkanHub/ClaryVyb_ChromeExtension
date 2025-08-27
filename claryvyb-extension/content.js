@@ -72,7 +72,9 @@ widgetContainer.innerHTML = `
   </div>
   <div id="popup" class="glass">
     <div class="header">
-      <img src="${chrome.runtime.getURL("icons/icon48.png")}" alt="ClaryVyb" />
+      <img src="${chrome.runtime.getURL(
+        "icons/ClaryVybLogo48.png"
+      )}" alt="ClaryVyb" />
       <span class="title">ClaryVyb</span>
       <button id="minimizeButton">&times;</button>
     </div>
@@ -257,6 +259,7 @@ const knownAiDomains = [
   "bing.com",
   "lovable.dev",
   "bolt.new",
+  "studio.firebase.google.com",
 ];
 
 function isAiPlatform(url) {
