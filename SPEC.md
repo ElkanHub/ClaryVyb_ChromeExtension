@@ -2,8 +2,8 @@
 
 ---
 
-### **Document Version:** 1.2
-### **Last Updated:** 2025-08-26
+### **Document Version:** 1.3
+### **Last Updated:** 2025-08-27
 
 ---
 
@@ -12,6 +12,8 @@
 ClaryVyb is a Chrome extension designed to help users refine and improve their writing prompts for AI platforms. It provides a non-intrusive, on-page widget that allows for quick prompt clarification and simplification without disrupting the user's workflow.
 
 The core of the extension is a draggable and resizable glassmorphic widget that can be expanded for prompt input or collapsed into a small, floating circle to save space. The widget is constrained to the visible screen area, ensuring it is always accessible.
+
+A key feature is the **AI Platform Detection**, where the widget's floating circle glows to notify the user when they are on a known AI website. This glow can also be manually triggered via a keyboard shortcut.
 
 ---
 
@@ -37,11 +39,11 @@ The widget is the central UI component of the extension. It can be moved freely 
 *   **Behavior:**
     *   The panel is draggable by its header.
     *   The panel is resizable from the bottom-right corner.
-    *   The panel has a minimum width of 280px and a maximum width of 600px.
+    *   The panel has a minimum width of 400px and a maximum width of 600px.
     *   The panel has a minimum height of 180px and a maximum height of 400px.
     *   Clicking the minimize button collapses the panel back into the floating circle.
 *   **Components:**
-    *   **Header:** Contains the extension logo and a minimize button.
+    *   **Header:** Contains the extension logo, title "ClaryVyb", and a minimize button.
     *   **Prompt Input:** A textarea for users to enter their text.
     *   **Action Buttons:**
         *   `Clarify`: (API call placeholder) To make the prompt more detailed.
@@ -49,7 +51,13 @@ The widget is the central UI component of the extension. It can be moved freely 
         *   `Copy`: To copy the output to the clipboard.
     *   **Output Container:** A read-only area to display the refined prompt.
 
-### 2.2. Status Indicators
+### 2.2. AI Platform Detection & Glow Effect
+
+*   **Automatic Detection:** The extension automatically detects when the user navigates to a known AI platform (e.g., `openai.com`, `claude.ai`).
+*   **Glow Notification:** When an AI platform is detected, the floating circle emits a "pulse glow" animation to subtly notify the user.
+*   **Manual Trigger:** Users can manually trigger the glow effect using the keyboard shortcut `Ctrl+Shift+K` (or `Command+Shift+K` on Mac).
+
+### 2.3. Status Indicators
 
 *This functionality is planned for future API integration.*
 
@@ -80,6 +88,8 @@ claryvyb-extension/
 *   **Content Scripts:**
     *   `content.js`: Injects the widget and handles all its logic.
     *   `widget.css`: Provides the styling for the widget.
+*   **Commands:**
+    *   `trigger-ai-glow`: Defines the `Ctrl+Shift+K` shortcut.
 
 ### 3.3. Widget Logic (`content.js`)
 
@@ -88,12 +98,13 @@ claryvyb-extension/
 *   **Drag and Drop:** The drag and drop functionality is implemented for both the circle and the popup header.
 *   **Resizing:** The resizing functionality is implemented using a resize handle and a `ResizeObserver` to update the `uiState` object.
 *   **Boundary Constraints:** The `constrainWidgetPosition` helper function ensures that the widget stays within the visible screen area. This function is called during drag, resize, and expand operations. A `resize` event listener on the `window` object also ensures the widget stays within the boundaries when the window is resized.
+*   **AI Detection Logic:** The `isAiPlatform` function checks the current URL against a list of known AI domains. A `MutationObserver` is used to detect single-page application navigation.
 
 ### 3.4. Styling (`widget.css`)
 
 *   Defines the visual appearance of the widget, including the glassmorphism effect, layout, and animations.
 *   Uses `backdrop-filter: blur()` to create the blurred glass effect.
-*   Uses the `.claryvyb-circle-view` and `.claryvyb-popup-view` classes to control the visibility of the circle and the popup.
+*   Contains the `ai-glow` animation and styles for the progress spinner and status badges.
 
 ---
 
