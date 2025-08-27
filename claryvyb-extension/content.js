@@ -260,6 +260,7 @@ const knownAiDomains = [
   "lovable.dev",
   "bolt.new",
   "studio.firebase.google.com",
+  "sora.chatgpt.com",
 ];
 
 function isAiPlatform(url) {
