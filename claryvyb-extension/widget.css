@@ -121,8 +121,9 @@
 }
 
 #outputContainer {
+  padding: 0px 15px;
   box-shadow: inset 5px 5px 10px rgba(0, 0, 0, 0.1),
-    inset -5px -5px 5px rgba(255, 255, 255, 0.3);
+    inset -5px -5px 5px rgba(255, 255, 255, 0.2);
   overflow-y: auto;
   border-bottom: 2px solid #ccc;
 }

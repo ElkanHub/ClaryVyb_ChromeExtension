@@ -247,6 +247,7 @@ restoreUiState();
 const knownAiDomains = [
   "openai.com",
   "chat.openai.com",
+  "chatgpt.com",
   "claude.ai",
   "perplexity.ai",
   "character.ai",
@@ -266,25 +267,28 @@ const knownAiDomains = [
 function isAiPlatform(url) {
   try {
     const parsed = new URL(url);
+    const host = parsed.hostname.toLowerCase();
+    const path = parsed.pathname.toLowerCase();
 
-    // Exact domain match
-    if (knownAiDomains.some((domain) => parsed.hostname.includes(domain))) {
-      return true;
-    }
-    // Contains domain name
-    if (knownAiDomains.some((domain) => parsed.includes(domain))) {
-      return true;
-    }
+    // One combined check
+    const isMatch =
+      // Exact or partial domain match
+      knownAiDomains.some(
+        (domain) => host === domain || host.includes(domain)
+      ) ||
+      // Heuristic: url contains domain string anywhere
+      knownAiDomains.some((domain) => url.toLowerCase().includes(domain)) ||
+      // Ends with .ai or path has "/ai"
+      host.endsWith(".ai") ||
+      path.includes("/ai");
 
-    // Heuristic: contains .ai or path with "ai"
-    if (parsed.hostname.endsWith(".ai") || parsed.pathname.includes("/ai")) {
-      return true;
-    }
+    return isMatch;
   } catch (e) {
     console.error("Invalid URL", e);
+    return false;
   }
-  return false;
 }
+
 //2============================
 function triggerAiGlow() {
   const circle = document.getElementById("floatingCircle");
