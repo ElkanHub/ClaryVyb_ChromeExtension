@@ -284,7 +284,7 @@ function isAiPlatform(url) {
 
     return isMatch;
   } catch (e) {
-    console.error("Invalid URL", e);
+    console.error("Invalid URL-Not an AI platform");
     return false;
   }
 }

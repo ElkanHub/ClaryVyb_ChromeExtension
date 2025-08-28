@@ -140,10 +140,25 @@
   padding: 5px 0px;
   flex-shrink: 0;
 }
-button {
+.buttons button {
   padding: 3px;
   border-radius: 5px;
   border: none;
+  font-weight: bold;
+  cursor: pointer;
+}
+.buttons #clarifyButton {
+  /* success green */
+  color: #9aca9c;
+}
+.buttons #conciseButton {
+  /* success blue */
+  color: #8fc4f0;
+}
+.buttons #clarifyButton:active,
+.buttons #conciseButton:active,
+.buttons #copyButton:active {
+  color: #b7b7b7;
 }
 
 /* ========================== */
