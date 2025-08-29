@@ -1,0 +1,60 @@
+## ClaryVyb Backend MVP TODO
+
+### Setup
+- [x] Create project structure
+- [x] Initialize package.json & scripts (already done)
+- [x] Create .env with generated secrets
+- [x] Create server.js
+
+### Config & Models
+- [x] Create config/db.js
+- [x] Create models/User.js
+
+### Core Middleware & Utils
+- [x] Create utils/crypto.js
+- [x] Create middleware/auth.js
+- [x] Create middleware/errorHandler.js
+- [x] Create middleware/validate.js
+- [x] Create middleware/rateLimits.js
+
+### Validation
+- [x] Create validators/schemas.js
+
+### Services
+- [x] Create services/groqService.js
+
+### Controllers
+- [x] Create controllers/authController.js
+- [x] Create controllers/userController.js
+- [x] Create controllers/promptController.js
+
+### Routes
+- [x] Create routes/authRoutes.js
+- [x] Create routes/userRoutes.js
+- [x] Create routes/promptRoutes.js
+
+### Docs & Testing
+- [x] Create README.md
+- [ ] Perform testing checklist
+
+---
+ChangeLog:
+- .env: Initial creation with generated secrets.
+- TODO.txt: Initial creation.
+- server.js: Initial creation.
+- config/db.js: Initial creation.
+- models/User.js: Initial creation.
+- utils/crypto.js: Initial creation.
+- middleware/auth.js: Initial creation.
+- middleware/errorHandler.js: Initial creation.
+- middleware/validate.js: Initial creation.
+- middleware/rateLimits.js: Initial creation.
+- validators/schemas.js: Initial creation.
+- services/groqService.js: Initial creation.
+- controllers/authController.js: Initial creation.
+- controllers/userController.js: Initial creation.
+- controllers/promptController.js: Initial creation.
+- routes/authRoutes.js: Initial creation.
+- routes/userRoutes.js: Initial creation.
+- routes/promptRoutes.js: Initial creation.
+- README.md: Initial creation.
