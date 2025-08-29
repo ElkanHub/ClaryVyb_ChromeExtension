@@ -115,7 +115,7 @@ TODO.txt: add “Initialized package.json & scripts”.
 Create:
 
 PORT=5000
-MONGO_URI=mongodb+srv://elkanahdonkor:th6WU28nn6ryygeX@learningmongo.oo1584i.mongodb.net/ClaryVybdatabase?retryWrites=true&w=majority&appName=LearningMongo
+MONGO_URI=mongodb+srv://elkanahdonkor:......password....@learningmongo.oo1584i.mongodb.net/<databaseCollection>?retryWrites=true&w=majority&appName=LearningMongo
 JWT_SECRET=replace_with_strong_random_secret
 ENCRYPTION_SECRET=replace_with_strong_random_secret
 NODE_ENV=development
