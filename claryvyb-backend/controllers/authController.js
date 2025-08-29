@@ -33,3 +33,8 @@ export const login = async (req, res, next) => {
     next(err);
   }
 };
+
+export const logout = (req, res) => {
+  // Client-side handled
+  res.json({ success: true, message: "Logged out successfully" });
+};

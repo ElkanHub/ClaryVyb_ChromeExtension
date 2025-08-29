@@ -40,6 +40,13 @@
 - [x] Create README.md
 - [ ] Perform testing checklist
 
+### New Features
+- [x] Implement POST /api/auth/logout
+- [x] Implement PUT /api/user/apikey
+- [x] Implement DELETE /api/user/apikey
+- [x] Implement GET /api/user/profile
+
+
 ---
 ChangeLog:
 - .env: Initial creation with generated secrets.

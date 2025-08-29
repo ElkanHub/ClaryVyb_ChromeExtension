@@ -77,6 +77,13 @@ Body: { "email": "user@example.com", "password": "password123" }
 
 Response: { "token": "<JWT_TOKEN>" }
 
+Logout
+
+Endpoint: POST /api/auth/logout
+
+Response: { success: true, message: "Logged out successfully" }
+
+
 Authenticated Requests
 
 Must send:
@@ -88,9 +95,17 @@ Authorization: Bearer <JWT_TOKEN>
 Users bring their own Groq API key.
 We encrypt it before storing in MongoDB.
 
+Get User Profile
+
+Endpoint: GET /api/user/profile
+
+Headers: Authorization: Bearer <JWT_TOKEN>
+
+Response: { "email": "user@example.com", "createdAt": "...", "updatedAt": "..." }
+
 Save API Key
 
-Endpoint: POST /api/user/apikey
+Endpoint: PUT /api/user/apikey
 
 Headers: Authorization: Bearer <JWT_TOKEN>
 
@@ -99,6 +114,14 @@ Body: { "apiKey": "gsk-1234abcd..." }
 Response: { success: true, message: "API key saved securely" }
 
 🔒 Stored as AES-encrypted string.
+
+Delete API Key
+
+Endpoint: DELETE /api/user/apikey
+
+Headers: Authorization: Bearer <JWT_TOKEN>
+
+Response: { success: true, message: "API key removed" }
 
 Use in Prompts
 

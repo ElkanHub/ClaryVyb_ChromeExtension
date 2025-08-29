@@ -29,3 +29,13 @@ export const deleteApiKey = async (req, res, next) => {
     next(err);
   }
 };
+
+export const getProfile = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.user.id).select("email createdAt updatedAt").lean();
+    if (!user) return res.status(404).json({ error: "User not found" });
+    res.json(user);
+  } catch (err) {
+    next(err);
+  }
+};
