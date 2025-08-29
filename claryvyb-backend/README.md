@@ -1,3 +1,4 @@
+
 📖 ClaryVyb Backend (MVP)
 
 A lightweight backend for the ClaryVyb Chrome Extension MVP built with Node.js (Express) and MongoDB.
@@ -7,7 +8,7 @@ User authentication (JWT)
 
 Secure storage of user Groq API keys (AES encryption)
 
-Prompt endpoints (clarify / concise) powered by Groq LLaMA 3.3-70B-Instant
+Prompt endpoints (clarify / concise) powered by Groq llama-3.1-8b-instant
 
 Minimalist MVP flow (no history, freemium-ready)
 

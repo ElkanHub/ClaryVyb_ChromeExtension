@@ -1,7 +1,7 @@
-const { encrypt } = require("../utils/crypto");
-const User = require("../models/User");
+import { encrypt } from "../utils/crypto.js";
+import User from "../models/User.js";
 
-exports.saveApiKey = async (req, res, next) => {
+export const saveApiKey = async (req, res, next) => {
   try {
     const { apiKey } = req.body;
     const enc = encrypt(apiKey);
@@ -12,7 +12,7 @@ exports.saveApiKey = async (req, res, next) => {
   }
 };
 
-exports.getApiKeyStatus = async (req, res, next) => {
+export const getApiKeyStatus = async (req, res, next) => {
   try {
     const user = await User.findById(req.user.id).select("apiKey").lean();
     return res.json({ hasApiKey: Boolean(user?.apiKey) });
@@ -21,7 +21,7 @@ exports.getApiKeyStatus = async (req, res, next) => {
   }
 };
 
-exports.deleteApiKey = async (req, res, next) => {
+export const deleteApiKey = async (req, res, next) => {
   try {
     await User.findByIdAndUpdate(req.user.id, { $unset: { apiKey: 1 } });
     return res.json({ success: true, message: "API key removed" });

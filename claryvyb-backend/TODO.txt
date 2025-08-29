@@ -33,6 +33,9 @@
 - [x] Create routes/userRoutes.js
 - [x] Create routes/promptRoutes.js
 
+### Refactoring
+- [x] Convert to ES Modules
+
 ### Docs & Testing
 - [x] Create README.md
 - [ ] Perform testing checklist
@@ -58,3 +61,4 @@ ChangeLog:
 - routes/userRoutes.js: Initial creation.
 - routes/promptRoutes.js: Initial creation.
 - README.md: Initial creation.
+- ES Modules Conversion: Converted all .js files from CommonJS to ES Modules.

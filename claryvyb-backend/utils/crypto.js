@@ -1,4 +1,4 @@
-const crypto = require("crypto");
+import crypto from "crypto";
 const algorithm = "aes-256-cbc";
 
 // Derive a 32-byte key from ENCRYPTION_SECRET
@@ -8,7 +8,7 @@ const key = crypto.scryptSync(
   32
 );
 
-function encrypt(plain) {
+export function encrypt(plain) {
   const iv = crypto.randomBytes(16);
   const cipher = crypto.createCipheriv(algorithm, key, iv);
   let enc = cipher.update(plain, "utf8", "hex");
@@ -16,7 +16,7 @@ function encrypt(plain) {
   return `${iv.toString("hex")}:${enc}`;
 }
 
-function decrypt(payload) {
+export function decrypt(payload) {
   const [ivHex, enc] = String(payload).split(":");
   const iv = Buffer.from(ivHex, "hex");
   const decipher = crypto.createDecipheriv(algorithm, key, iv);
@@ -24,5 +24,3 @@ function decrypt(payload) {
   dec += decipher.final("utf8");
   return dec;
 }
-
-module.exports = { encrypt, decrypt };

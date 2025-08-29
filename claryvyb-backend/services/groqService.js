@@ -1,4 +1,4 @@
-const axios = require("axios");
+import axios from "axios";
 
 async function runGroq(userApiKey, model, messages) {
   try {
@@ -29,4 +29,4 @@ async function runGroq(userApiKey, model, messages) {
   }
 }
 
-module.exports = { runGroq };
+export { runGroq };

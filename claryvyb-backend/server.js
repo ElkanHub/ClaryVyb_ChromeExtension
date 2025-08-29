@@ -1,11 +1,14 @@
-const express = require("express");
-const dotenv = require("dotenv");
-const cors = require("cors");
-const helmet = require("helmet");
-const morgan = require("morgan");
-const compression = require("compression");
-const errorHandler = require("./middleware/errorHandler");
-const connectDB = require("./config/db");
+import express from "express";
+import dotenv from "dotenv";
+import cors from "cors";
+import helmet from "helmet";
+import morgan from "morgan";
+import compression from "compression";
+import errorHandler from "./middleware/errorHandler.js";
+import connectDB from "./config/db.js";
+import authRoutes from "./routes/authRoutes.js";
+import userRoutes from "./routes/userRoutes.js";
+import promptRoutes from "./routes/promptRoutes.js";
 
 dotenv.config();
 const app = express();
@@ -24,9 +27,9 @@ if (process.env.NODE_ENV !== "production") app.use(morgan("dev"));
 app.get("/api/health", (_req, res) => res.json({ ok: true }));
 
 // Routes
-app.use("/api/auth", require("./routes/authRoutes"));
-app.use("/api/user", require("./routes/userRoutes"));
-app.use("/api/prompt", require("./routes/promptRoutes"));
+app.use("/api/auth", authRoutes);
+app.use("/api/user", userRoutes);
+app.use("/api/prompt", promptRoutes);
 
 // 404
 app.use((req, res) => res.status(404).json({ error: "Not found" }));

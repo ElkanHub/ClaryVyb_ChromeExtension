@@ -432,7 +432,7 @@ next(err);
     const { decrypt } = require("../utils/crypto");
     const { runGroq } = require("../services/groqService");
 
-const MODEL = "llama-3.3-70b-instant";
+const MODEL = "llama-3.1-8b-instant";
 
 exports.clarify = async (req, res, next) => {
 try {
