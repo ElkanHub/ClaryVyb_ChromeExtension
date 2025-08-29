@@ -1,6 +1,7 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import User from "../models/User.js";
+import TokenBlocklist from "../models/TokenBlocklist.js";
 
 export const register = async (req, res, next) => {
   try {
@@ -34,7 +35,12 @@ export const login = async (req, res, next) => {
   }
 };
 
-export const logout = (req, res) => {
-  // Client-side handled
-  res.json({ success: true, message: "Logged out successfully" });
+export const logout = async (req, res, next) => {
+  try {
+    const token = req.header("Authorization").replace("Bearer ", "");
+    await TokenBlocklist.create({ token });
+    res.json({ success: true, message: "Logged out successfully" });
+  } catch (err) {
+    next(err);
+  }
 };

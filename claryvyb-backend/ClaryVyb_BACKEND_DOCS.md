@@ -81,6 +81,8 @@ Logout
 
 Endpoint: POST /api/auth/logout
 
+Headers: Authorization: Bearer <JWT_TOKEN>
+
 Response: { success: true, message: "Logged out successfully" }
 
 
@@ -182,6 +184,8 @@ Passwords stored with bcrypt (salted, hashed).
 API Keys encrypted with AES-256-CBC before saving.
 
 JWT expires after 7 days.
+
+On logout, JWTs are invalidated using a server-side blocklist.
 
 No raw API key is ever logged or returned.
 
