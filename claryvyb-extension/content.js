@@ -53,6 +53,9 @@ function restoreUiState(callback) {
 function applyUiState() {
   const isPopup = uiState.view === "popup" || uiState.view === "login";
 
+  widgetContainer.style.position = "fixed";
+  widgetContainer.style.zIndex = "999999999999999999999";
+
   if (!isPopup) {
     // Circle view
     widgetContainer.classList.add("claryvyb-circle-view");
@@ -133,7 +136,7 @@ widgetContainer.innerHTML = `
       </div>
        <div id="outputContainer">
          <p>
-           Start by entering a prompt above and click Clarify or Concise.
+           Start by entering a prompt above and click Clarify or Concise.<a href="https://claryvyb.com" target="_blank">Click here to learn more about ClaryVyb</a>
          </p>
        </div>
     </div>
@@ -147,6 +150,7 @@ widgetContainer.innerHTML = `
   </div>
 `;
 document.body.appendChild(widgetContainer);
+
 
 // =====================================================================================
 // SECTION: UI ELEMENT REFERENCES
@@ -484,6 +488,7 @@ window.addEventListener("resize", () => {
 // =====================================================================================
 
 async function initialize() {
+  widgetContainer.style.display = "none";
   await new Promise((resolve) => restoreUiState(resolve));
   // After restoring state, check authentication to ensure the correct view is shown.
   const response = await sendMessage(MSG.CHECK_AUTH);
@@ -496,7 +501,6 @@ async function initialize() {
     // If not authenticated, always force the login view.
     showLoginView();
   }
-  // Make the widget visible after initialization
   widgetContainer.style.display = "block";
 }
 
