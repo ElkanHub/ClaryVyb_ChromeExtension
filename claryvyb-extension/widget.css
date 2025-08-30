@@ -1,4 +1,4 @@
-'''@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@500;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@500;700&display=swap");
 
 /* =====================================================================================
 // SECTION: GENERAL WIDGET STYLES
@@ -7,31 +7,38 @@
 #claryvyb-widget {
   position: fixed;
   z-index: 999999999999999999999;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   font-size: 14px;
   color: #fff;
 }
 
 #popup.glass {
-    background: rgba(255, 255, 255, 0.15); /* lightly darkened glass for better contrast */
+  background: rgba(
+    255,
+    255,
+    255,
+    0.15
+  ); /* lightly darkened glass for better contrast */
   backdrop-filter: blur(10px) saturate(180%);
   border-radius: 16px;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
   border: 1px solid rgba(255, 255, 255, 0.3);
 
-  padding: 20px;
+  padding: 10px 20px;
   width: 360px;
-  height: 480px;
-  min-width: 300px;
-  max-width: 90vw;
+  height: 400px;
+  min-width: 335px;
+  max-width: 400px;
   min-height: 400px;
-  max-height: 90vh;
+  max-height: 500px;
   resize: both;
+  overflow-y: auto; /* Enable vertical scrolling */
   overflow: hidden; /* Hide overflow, child elements will scroll */
   display: flex;
   flex-direction: column;
-}
 
+  box-sizing: border-box;
+}
 
 .claryvyb-circle-view #popup {
   display: none;
@@ -46,7 +53,7 @@
 // ===================================================================================== */
 
 #popup .header {
-  height: 50px;
+  height: 40px;
   width: 100%;
   display: flex;
   flex-direction: row;
@@ -138,11 +145,11 @@
 }
 
 #authView #apiKeyLink {
-    font-size: 12px;
-    color: #a0c4ff;
-    margin-top: -10px;
-    margin-bottom: 15px;
-    align-self: flex-start;
+  font-size: 12px;
+  color: #a0c4ff;
+  margin-top: -10px;
+  margin-bottom: 15px;
+  align-self: flex-start;
 }
 
 #authButton {
@@ -184,15 +191,15 @@
 // ===================================================================================== */
 
 #promptView {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
-#promptInput {
-  flex-grow: 1;
-  min-height: 80px; /* Initial height */
-  max-height: 250px;
+#popup #promptInput {
+  height: 100px; /* Initial height */
+  min-height: 50px;
+  max-height: 200px;
   width: 100%;
   background: rgba(0, 0, 0, 0.2);
   border: 1px solid rgba(255, 255, 255, 0.2);
@@ -207,12 +214,12 @@
 .buttons {
   display: flex;
   gap: 10px;
-  flex-shrink: 0;
+  width: 100%;
   margin-bottom: 10px;
 }
 
 .buttons button {
-  flex-grow: 1;
+  width: auto;
   padding: 10px;
   border-radius: 8px;
   border: none;
@@ -221,42 +228,52 @@
   transition: background 0.2s;
 }
 
-#clarifyButton { color: #60c280; }
-#conciseButton { color: #60abc2; }
-#copyButton {  color: #171717; }
-#logoutButton { background: #555; color: white; }
+#clarifyButton {
+  color: #60c280;
+}
+#conciseButton {
+  color: #60abc2;
+}
+#copyButton {
+  color: #171717;
+}
+#logoutButton {
+  background: #555;
+  color: white;
+}
 
 .buttons button:hover {
   background-color: #8f8f8f26;
 }
 .buttons button:active {
   background-color: #8f8f8f;
-    color: #cecece;
+  color: #cecece;
 }
 .buttons button:disabled {
-    background: #444;
-    cursor: not-allowed;
+  background: #444;
+  cursor: not-allowed;
 }
 
 #outputContainer {
-  flex-grow: 1;
+  height: 100%;
+  min-height: 50px;
   background: rgba(0, 0, 0, 0.3);
   border-radius: 8px;
   padding: 15px;
   overflow-y: auto;
   font-size: 14px;
   line-height: 1.6;
-  box-shadow: inset 0 0 10px rgba(0,0,0,0.3);
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.3);
 }
 
 #outputContainer .spinner {
-    width: 30px;
-    height: 30px;
-    border: 4px solid rgba(255, 255, 255, 0.2);
-    border-top-color: #fff;
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-    margin: 20px auto;
+  width: 30px;
+  height: 30px;
+  border: 4px solid rgba(255, 255, 255, 0.2);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 20px auto;
 }
 #outputContainer a {
   color: #b89300;
@@ -264,7 +281,9 @@
 }
 
 @keyframes spin {
-    to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 /* =====================================================================================
@@ -272,22 +291,26 @@
 // ===================================================================================== */
 
 .footer {
-    flex-shrink: 0;
-    padding-top: 10px;
-    text-align: center;
-    font-size: 12px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  flex-shrink: 0;
+  padding-top: 10px;
+  text-align: center;
+  font-size: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.footer-message.success { color: #70e000; }
-.footer-message.error { color: #ff6b6b; }
+.footer-message.success {
+  color: #70e000;
+}
+.footer-message.error {
+  color: #ff6b6b;
+}
 
 #updateApiKeyButton {
-    color: #a0c4ff;
-    text-decoration: none;
-    cursor: pointer;
+  color: #a0c4ff;
+  text-decoration: none;
+  cursor: pointer;
 }
 
 /* =====================================================================================
@@ -316,7 +339,14 @@
   height: 15px;
   cursor: se-resize;
   opacity: 0.5;
-  background-image: linear-gradient(135deg, transparent 40%, white 40%, white 60%, transparent 60%, transparent 100%);
+  background-image: linear-gradient(
+    135deg,
+    transparent 40%,
+    white 40%,
+    white 60%,
+    transparent 60%,
+    transparent 100%
+  );
 }
 
 /* =====================================================================================
@@ -330,7 +360,17 @@
 }
 
 @keyframes pulseGlow {
-  0% { box-shadow: 0 0 0 rgba(203, 29, 17, 0); transform: scale(1); }
-  50% { box-shadow: 0 0 25px rgba(203, 23, 17, 0.8), 0 0 50px rgba(252, 170, 37, 0.6); transform: scale(1.05); }
-  100% { box-shadow: 0 0 0 rgba(203, 29, 17, 0); transform: scale(1); }
+  0% {
+    box-shadow: 0 0 0 rgba(203, 29, 17, 0);
+    transform: scale(1);
+  }
+  50% {
+    box-shadow: 0 0 25px rgba(203, 23, 17, 0.8),
+      0 0 50px rgba(252, 170, 37, 0.6);
+    transform: scale(1.05);
+  }
+  100% {
+    box-shadow: 0 0 0 rgba(203, 29, 17, 0);
+    transform: scale(1);
+  }
 }
