@@ -77,6 +77,8 @@ Body: { "email": "user@example.com", "password": "password123" }
 
 Response: { "token": "<JWT_TOKEN>" }
 
+**Note on Token Storage:** The backend sends the JWT in the response body. The client is responsible for storing it securely. For enhanced security against XSS attacks, it is highly recommended to store the JWT in an `HttpOnly` cookie.
+
 Logout
 
 Endpoint: POST /api/auth/logout
