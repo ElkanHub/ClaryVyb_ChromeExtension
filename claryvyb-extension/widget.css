@@ -1,4 +1,48 @@
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@500;700&display=swap");
+'''@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@500;700&display=swap");
+
+/* =====================================================================================
+// SECTION: GENERAL WIDGET STYLES
+// ===================================================================================== */
+
+#claryvyb-widget {
+  position: fixed;
+  z-index: 999999999999999999999;
+  font-family: 'Poppins', sans-serif;
+  font-size: 14px;
+  color: #fff;
+  display: none; /* Initially hidden until initialized */
+}
+
+#popup.glass {
+  background: rgba(30, 30, 40, 0.75); /* Darker glass for better contrast */
+  backdrop-filter: blur(12px) saturate(180%);
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 20px;
+  width: 360px;
+  height: 480px;
+  min-width: 300px;
+  max-width: 90vw;
+  min-height: 400px;
+  max-height: 90vh;
+  resize: both;
+  overflow: hidden; /* Hide overflow, child elements will scroll */
+  display: flex;
+  flex-direction: column;
+}
+
+.claryvyb-circle-view #popup {
+  display: none;
+}
+
+.claryvyb-popup-view #floatingCircle {
+  display: none;
+}
+
+/* =====================================================================================
+// SECTION: HEADER
+// ===================================================================================== */
 
 #popup .header {
   height: 50px;
@@ -6,18 +50,18 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
+  cursor: grab;
+  flex-shrink: 0;
   cursor: grab;
 }
 
 #popup .header img {
-  width: 40px;
-  height: 40px;
-  margin-right: 8px;
-  object-fit: cover;
-  object-position: center;
-  user-select: none;
+  width: 32px;
+  height: 32px;
+  margin-right: 10px;
 }
+
 #popup .header .title {
   font-family: "Poppins", sans-serif;
   font-size: 18px;
@@ -38,46 +82,203 @@
   letter-spacing: 1px;
   user-select: none;
 }
+
 #popup #minimizeButton {
   position: absolute;
-  top: 20px;
-  right: 20px;
+  top: 15px;
+  right: 15px;
   cursor: pointer;
-  width: 30px;
-  height: 30px;
+  width: 24px;
+  height: 24px;
+  border: none;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 24px;
+  line-height: 1;
+  padding: 0;
 }
+
 #popup #minimizeButton:hover {
   color: #e25c5c;
 }
-#claryvyb-widget {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  z-index: 999999999999999999999;
-  font-family: sans-serif;
-}
 
-#popup.glass {
-  background: rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(10px) saturate(180%);
-  border-radius: 16px;
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  padding: 20px;
-  width: 300px;
-  min-width: 400px;
-  max-width: 600px;
-  min-height: 180px;
-  max-height: 400px;
-  resize: both;
-  overflow: auto;
+/* =====================================================================================
+// SECTION: AUTH VIEW
+// ===================================================================================== */
+
+#authView {
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  padding: 0 10px;
 }
 
-.hidden {
-  display: none;
+#authView h3 {
+  font-size: 22px;
+  margin-bottom: 20px;
+  color: #fff;
 }
+
+#authView input {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 15px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: rgba(0, 0, 0, 0.2);
+  color: #fff;
+  font-size: 14px;
+}
+
+#authView input::placeholder {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+#authView #apiKeyLink {
+    font-size: 12px;
+    color: #a0c4ff;
+    margin-top: -10px;
+    margin-bottom: 15px;
+    align-self: flex-start;
+}
+
+#authButton {
+  width: 100%;
+  padding: 12px;
+  border-radius: 8px;
+  border: none;
+  background: #8e7dff;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+#authButton:hover {
+  background: #a08fff;
+}
+
+#authButton:disabled {
+  background: #555;
+  cursor: not-allowed;
+}
+
+#authToggleText {
+  margin-top: 20px;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+#authToggleText a {
+  color: #a0c4ff;
+  text-decoration: none;
+  font-weight: 700;
+}
+
+/* =====================================================================================
+// SECTION: PROMPT VIEW
+// ===================================================================================== */
+
+#promptView {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+#promptInput {
+  flex-grow: 1;
+  height: 100px; /* Initial height */
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #fff;
+  border-radius: 8px;
+  padding: 10px;
+  font-size: 14px;
+  resize: none;
+  margin-bottom: 10px;
+}
+
+.buttons {
+  display: flex;
+  gap: 10px;
+  flex-shrink: 0;
+  margin-bottom: 10px;
+}
+
+.buttons button {
+  flex-grow: 1;
+  padding: 10px;
+  border-radius: 8px;
+  border: none;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+#clarifyButton { background: #2a9d8f; color: white; }
+#conciseButton { background: #e76f51; color: white; }
+#copyButton { background: #f4a261; color: white; }
+#logoutButton { background: #555; color: white; }
+
+.buttons button:disabled {
+    background: #444;
+    cursor: not-allowed;
+}
+
+#outputContainer {
+  flex-grow: 1;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 8px;
+  padding: 15px;
+  overflow-y: auto;
+  font-size: 14px;
+  line-height: 1.6;
+  box-shadow: inset 0 0 10px rgba(0,0,0,0.3);
+}
+
+#outputContainer .spinner {
+    width: 30px;
+    height: 30px;
+    border: 4px solid rgba(255, 255, 255, 0.2);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 20px auto;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* =====================================================================================
+// SECTION: FOOTER
+// ===================================================================================== */
+
+.footer {
+    flex-shrink: 0;
+    padding-top: 10px;
+    text-align: center;
+    font-size: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.footer-message.success { color: #70e000; }
+.footer-message.error { color: #ff6b6b; }
+
+#updateApiKeyButton {
+    color: #a0c4ff;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* =====================================================================================
+// SECTION: FLOATING CIRCLE & RESIZE HANDLE
+// ===================================================================================== */
 
 #floatingCircle {
   width: 60px;
@@ -100,89 +301,23 @@
   width: 15px;
   height: 15px;
   cursor: se-resize;
-  background-image: linear-gradient(
-    135deg,
-    transparent 0%,
-    transparent 50%,
-    #fff 50%,
-    #fff 100%
-  );
   opacity: 0.5;
+  background-image: linear-gradient(135deg, transparent 40%, white 40%, white 60%, transparent 60%, transparent 100%);
 }
 
-#promptInput,
-#outputContainer {
-  font-size: 18px;
-  flex-grow: 1;
-  height: 100%;
-}
-#promptInput {
-  max-width: 360px;
-}
+/* =====================================================================================
+// SECTION: AI GLOW ANIMATION
+// ===================================================================================== */
 
-#outputContainer {
-  padding: 0px 15px;
-  box-shadow: inset 5px 5px 10px rgba(0, 0, 0, 0.1),
-    inset -5px -5px 5px rgba(255, 255, 255, 0.2);
-  overflow-y: auto;
-  border-bottom: 2px solid #ccc;
-}
-
-.claryvyb-circle-view #popup {
-  display: none;
-}
-
-.claryvyb-popup-view #floatingCircle {
-  display: none;
-}
-
-.buttons {
-  padding: 5px 0px;
-  flex-shrink: 0;
-}
-.buttons button {
-  padding: 3px;
-  border-radius: 5px;
-  border: none;
-  font-weight: bold;
-  cursor: pointer;
-}
-.buttons #clarifyButton {
-  /* success green */
-  color: #9aca9c;
-}
-.buttons #conciseButton {
-  /* success blue */
-  color: #8fc4f0;
-}
-.buttons #clarifyButton:active,
-.buttons #conciseButton:active,
-.buttons #copyButton:active {
-  color: #b7b7b7;
-}
-
-/* ========================== */
 #floatingCircle.ai-glow {
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #cb5b11, #fce325); /* gradient fill */
+  background: linear-gradient(135deg, #cb5b11, #fce325);
   box-shadow: 0 0 20px rgba(203, 29, 17, 0.6);
-  animation: pulseGlow 2s ease-in-out 3; /* run 3 times then stop */
+  animation: pulseGlow 2s ease-in-out 3;
 }
 
 @keyframes pulseGlow {
-  0% {
-    box-shadow: 0 0 0 rgba(106, 17, 203, 0);
-    transform: scale(1);
-  }
-  50% {
-    box-shadow: 0 0 25px rgba(203, 23, 17, 0.8),
-      0 0 50px rgba(252, 170, 37, 0.6);
-    transform: scale(1.05);
-  }
-  100% {
-    box-shadow: 0 0 0 rgba(106, 17, 203, 0);
-    transform: scale(1);
-  }
+  0% { box-shadow: 0 0 0 rgba(203, 29, 17, 0); transform: scale(1); }
+  50% { box-shadow: 0 0 25px rgba(203, 23, 17, 0.8), 0 0 50px rgba(252, 170, 37, 0.6); transform: scale(1.05); }
+  100% { box-shadow: 0 0 0 rgba(203, 29, 17, 0); transform: scale(1); }
 }
+'''

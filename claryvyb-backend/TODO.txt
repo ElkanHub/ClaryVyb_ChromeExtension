@@ -46,6 +46,9 @@
 - [x] Implement DELETE /api/user/apikey
 - [x] Implement GET /api/user/profile
 
+### Frontend
+- [x] Connect frontend to backend
+
 
 ---
 ChangeLog:

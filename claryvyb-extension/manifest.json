@@ -3,12 +3,18 @@
   "name": "ClaryVyb",
   "version": "1.0",
   "description": "Clarify and simplify prompts for AI platforms.",
-  "permissions": ["scripting", "activeTab", "storage"],
+  "permissions": ["scripting", "activeTab", "storage", "tabs"],
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "host_permissions": ["http://localhost:5000/*"],
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
       "js": ["content.js"],
-      "css": ["widget.css"]
+      "css": ["widget.css"],
+      "run_at": "document_idle"
     }
   ],
   "web_accessible_resources": [
@@ -16,7 +22,9 @@
       "resources": [
         "icons/icon16.png",
         "icons/ClaryVybLogo48.png",
-        "icons/icon128.png"
+        "icons/icon128.png",
+        "utils/messages.js",
+        "utils/crypto.js"
       ],
       "matches": ["<all_urls>"]
     }

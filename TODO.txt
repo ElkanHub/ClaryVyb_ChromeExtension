@@ -1,3 +1,12 @@
 TODO:
 - [DONE] ## Refactoring
 - [DONE] Create PUBLIC_DOC.md with marketing content.
+- [DONE] ## Connect Frontend to Backend
+  - [DONE] Create background.js for service worker.
+  - [DONE] Create utils/crypto.js for encryption.
+  - [DONE] Create utils/messages.js for message constants.
+  - [DONE] Update manifest.json for v3 and background script.
+  - [DONE] Refactor content.js to use message passing.
+  - [DONE] Implement auth flow (login/signup/logout).
+  - [DONE] Implement API key management.
+  - [DONE] Implement prompt handling through the backend.
